@@ -1,0 +1,39 @@
+[package]
+name = "cape"
+version = "0.0.2"
+edition = "2024"
+rust-version = "1.89.0"
+description = "🦸 An unintrusive ORM for Rust"
+authors = [
+    "Mete Can Eriş <can.eris@feyn.dev>"
+]
+documentation = "https://docs.rs/cape"
+repository = "https://github.com/mcaneris/cape"
+categories = ["database"]
+keywords = ["database", "sql", "mysql", "postgres", "sqlite"]
+
+license.workspace = true
+readme.workspace = true
+
+[lib]
+name = "cape"
+path = "src/lib.rs"
+
+[features]
+default = ["sqlite", "chrono"]
+
+# Database Backends
+sqlite = [ "dep:sqlx", "dep:tokio", "sqlx/sqlite", "sqlx/runtime-tokio-rustls" ]
+postgres = [ "dep:sqlx", "dep:tokio", "sqlx/postgres", "sqlx/runtime-tokio-rustls" ] 
+mysql = [ "dep:sqlx", "dep:tokio", "sqlx/mysql", "sqlx/runtime-tokio-rustls" ]
+
+# Optional Features
+chrono = [ "dep:chrono" ]
+serde = [ "dep:serde", "chrono?/serde" ]
+
+[dependencies]
+chrono = { workspace = true, optional = true }
+serde = { workspace = true, optional = true }
+
+sqlx = { version = "0.8", default-features = false, features = ["macros"], optional = true }
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros", "net", "time"], optional = true }
